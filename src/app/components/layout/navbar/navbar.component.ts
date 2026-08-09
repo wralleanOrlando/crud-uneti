@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+// Barra de navegacion principal con enlaces al dashboard, categorias, productos y stock
 @Component({
   selector: 'app-navbar',
   standalone: true,

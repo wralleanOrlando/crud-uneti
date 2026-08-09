@@ -50,11 +50,13 @@ export class CategoriaFormComponent implements OnInit {
   editando = signal(false);
   guardando = signal(false);
 
+  // Sincroniza el formulario al iniciar el componente
   ngOnInit() {
     console.log('[CategoriaForm] ngOnInit - item:', this.item());
     this.sincronizarForm();
   }
 
+  // Detecta cambios en el item recibido y actualiza el formulario
   constructor() {
     effect(() => {
       const currentItem = this.item();

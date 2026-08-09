@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 export class SupabaseService {
   private client: SupabaseClient;
 
+  // Crea la conexion con Supabase usando las credenciales del entorno
   constructor() {
     this.client = createClient(environment.supabaseUrl, environment.supabaseKey);
   }

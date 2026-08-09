@@ -28,14 +28,17 @@ export class ToastComponent implements OnInit {
   private toastService = inject(ToastService);
   toasts: Toast[] = [];
 
+  // Se suscribe a las notificaciones para mostrarlas en pantalla
   ngOnInit() {
     this.toastService.toasts$.subscribe(toasts => this.toasts = toasts);
   }
 
+  // Cierra una notificacion por su id
   remove(id: number) {
     this.toastService.remove(id);
   }
 
+  // Devuelve el color de fondo segun el tipo de notificacion
   getClasses(type: Toast['type']): string {
     switch (type) {
       case 'success': return 'bg-green-600';

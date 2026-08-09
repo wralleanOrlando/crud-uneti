@@ -78,6 +78,7 @@ export class ProductoFormComponent {
   editando = signal(false);
   guardando = signal(false);
 
+  // Detecta cambios en el item recibido y actualiza el formulario
   constructor() {
     effect(() => {
       const currentItem = this.item();

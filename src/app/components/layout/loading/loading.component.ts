@@ -14,6 +14,7 @@ export class LoadingComponent implements OnInit, OnDestroy {
   dots = signal('.');
   private intervalId: any;
 
+  // Inicia la animacion de puntos suspensivos cada 400ms
   ngOnInit() {
     this.intervalId = setInterval(() => {
       const current = this.dots();

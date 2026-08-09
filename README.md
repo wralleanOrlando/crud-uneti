@@ -83,116 +83,12 @@ await supabase.from('categorias').update({ nombre: 'Editada' }).eq('id', 1);
 await supabase.from('categorias').delete().eq('id', 1);
 ```
 
-## Diagrama de Clases
+## Diagramas
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           MODELOS                                    │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  ┌─────────────────┐       ┌─────────────────┐                     │
-│  │    Categoria     │       │     Producto     │                     │
-│  ├─────────────────┤       ├─────────────────┤                     │
-│  │ id?: number     │       │ id?: number     │                     │
-│  │ nombre: string  │       │ categoria_id: FK│                     │
-│  │ descripcion?: str│       │ nombre: string  │                     │
-│  │ created_at?: str│       │ descripcion?: str│                    │
-│  └─────────────────┘       │ precio: number  │                     │
-│                            │ codigo?: string │                     │
-│                            │ created_at?: str│                     │
-│                            │ categorias?: Cat│                     │
-│                            └─────────────────┘                     │
-│                                                                     │
-│  ┌─────────────────┐       ┌─────────────────┐                     │
-│  │      Stock       │       │     Estado      │                     │
-│  ├─────────────────┤       ├─────────────────┤                     │
-│  │ id?: number     │       │ id?: number     │                     │
-│  │ producto_id: FK │       │ nombre: string  │                     │
-│  │ cantidad: number│       │ descripcion?: str│                    │
-│  │ ubicacion?: str │       └─────────────────┘                     │
-│  │ estado_id: FK   │                                               │
-│  │ fecha_ingreso?  │                                               │
-│  │ observaciones?  │                                               │
-│  │ updated_at?: str│                                               │
-│  │ productos?: Prod│                                               │
-│  │ estados?: Estado│                                               │
-│  └─────────────────┘                                               │
-│                                                                     │
-├─────────────────────────────────────────────────────────────────────┤
-│                          SERVICIOS                                   │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │ SupabaseService                                               │  │
-│  │ - Cliente principal para conectar con Supabase                │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│                                                                     │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │ CategoriaService                                              │  │
-│  │ + getAll()          Obtener todas las categorías               │  │
-│  │ + getById(id)       Buscar una categoría por ID               │  │
-│  │ + create(cat)       Crear una nueva categoría                 │  │
-│  │ + update(id, cat)   Actualizar una categoría                  │  │
-│  │ + delete(id)        Eliminar una categoría                    │  │
-│  │ + count()           Contar total de categorías                │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│                                                                     │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │ ProductoService                                               │  │
-│  │ + getAll()          Obtener todos los productos (con categoría)│  │
-│  │ + getById(id)       Buscar un producto por ID                 │  │
-│  │ + create(prod)      Crear un nuevo producto                   │  │
-│  │ + update(id, prod)  Actualizar un producto                    │  │
-│  │ + delete(id)        Eliminar un producto                      │  │
-│  │ + count()           Contar total de productos                 │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│                                                                     │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │ StockService                                                  │  │
-│  │ + getAll()          Obtener todo el stock (con producto/estado)│  │
-│  │ + getById(id)       Buscar un registro de stock por ID        │  │
-│  │ + create(stock)     Crear un nuevo registro de stock          │  │
-│  │ + update(id, stock) Actualizar un registro de stock           │  │
-│  │ + delete(id)        Eliminar un registro de stock             │  │
-│  │ + totalCantidad()   Sumar total de unidades en stock          │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
+Los diagramas del sistema se encuentran en el directorio [`Diagramas/`](Diagramas/):
 
-## Diagrama Entidad-Relación
-
-```
-┌─────────────────┐         ┌─────────────────┐
-│    Categoria     │         │     Estado      │
-├─────────────────┤         ├─────────────────┤
-│ PK id           │         │ PK id           │
-│    nombre       │         │    nombre       │
-│    descripcion  │         │    descripcion  │
-│    created_at   │         └─────────────────┘
-└─────────────────┘                 │
-        │                           │
-        │ 1                         │ 1
-        │                           │
-        │ *                         │ *
-┌─────────────────┐         ┌─────────────────┐
-│     Producto     │         │      Stock      │
-├─────────────────┤         ├─────────────────┤
-│ PK id           │         │ PK id           │
-│ FK categoria_id │◄────────│ FK producto_id  │
-│    nombre       │         │ FK estado_id    │◄────
-│    descripcion  │         │    cantidad     │
-│    precio       │         │    ubicacion    │
-│    codigo       │         │    fecha_ingreso│
-│    created_at   │         │    observaciones│
-└─────────────────┘         │    updated_at   │
-                            └─────────────────┘
-
-Relaciones:
-  Categoria 1 ──── * Producto   (una categoría tiene muchos productos)
-  Producto  1 ──── * Stock      (un producto puede tener mucho stock)
-  Estado    1 ──── * Stock      (un estado puede estar en muchos registros)
-```
+- [Diagrama de Clases](Diagramas/clases.png)
+- [Diagrama Entidad-Relación](Diagramas/Entidad.png)
 
 ## Estructura del proyecto
 
